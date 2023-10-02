@@ -1,0 +1,4 @@
+services:
+  - name: web
+    buildCommand: yarn build
+    env: node_version=14
