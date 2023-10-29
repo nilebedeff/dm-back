@@ -1,7 +1,12 @@
+export type ProductType = {
+    id: number
+    title: string
+}
+
 const products = [{ id: 1, title: 'tomato' }, { id: 2, title: 'orange' }]
 
 export const productsRepository = {
-    findProducts(title: string | undefined) {
+    async findProducts(title: string | undefined): Promise<ProductType[]> {
         if (title) {
             let filteredProducts = products.filter(p => p.title.includes(title))
             return filteredProducts
@@ -9,11 +14,11 @@ export const productsRepository = {
             return products
         }
     },
-    findProductById(id: number) {
+    async findProductById(id: number): Promise<ProductType | undefined> {
         let product = products.find(p => p.id === id)
         return product
     },
-    createProduct(title: string) {
+    async createProduct(title: string): Promise<ProductType> {
         const newProduct = {
             id: +new Date(),
             title: title
@@ -21,16 +26,16 @@ export const productsRepository = {
         products.push(newProduct)
         return newProduct
     },
-    updateProduct(id: number, title: string) {
+    async updateProduct(id: number, title: string): Promise<boolean> {
         let product = products.find(p => p.id === id)
-    if (product) {
-        product.title = title
-        return true
-    } else {
-        return false
-    }
+        if (product) {
+            product.title = title
+            return true
+        } else {
+            return false
+        }
     },
-    deleteProduct(id: number) {
+    async deleteProduct(id: number): Promise<boolean> {
         for (let i = 0; i < products.length; i++) {
             if (products[i].id === id) {
                 products.splice(i, 1)
